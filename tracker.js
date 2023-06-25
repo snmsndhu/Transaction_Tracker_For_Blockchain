@@ -1,10 +1,10 @@
+require("dotenv").config();
 const { ethers, Contract } = require("ethers");
-
-const rpcURL = "https://cloudflare-eth.com/";
-const provider = new ethers.providers.JsonRpcProvider(rpcURL);
+const infuraKey = process.env.Infura;
+const provider = new ethers.providers.JsonRpcProvider(infuraKey);
 
 const TRANSACTION_CONTRACT_ADDRESS =
-  "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"; // USDC
+  "0xdAC17F958D2ee523a2206206994597C13D831ec7"; // USDC
 const TRANSACTION_CONTRACT_ABI = [
   {
     constant: true,
