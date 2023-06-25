@@ -3,8 +3,9 @@ const { ethers, Contract } = require("ethers");
 const rpcURL = "https://cloudflare-eth.com/";
 const provider = new ethers.providers.JsonRpcProvider(rpcURL);
 
-const CONTRACT_ADDRESS = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"; // USDC
-const CONTRACT_ABI = [
+const TRANSACTION_CONTRACT_ADDRESS =
+  "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"; // USDC
+const TRANSACTION_CONTRACT_ABI = [
   {
     constant: true,
     inputs: [],
@@ -121,18 +122,22 @@ const CONTRACT_ABI = [
     type: "event",
   },
 ];
-let contract = new Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
+let transactionContract = new Contract(
+  TRANSACTION_CONTRACT_ADDRESS,
+  TRANSACTION_CONTRACT_ABI,
+  provider
+);
 
 // Note: USDC uses 6 decimal places
 const TRANSFER_THRESHOLD = 100000000000; // wei
 
 const main = async () => {
-  const name = await contract.name();
+  const name = await transactionContract.name();
   console.log(
     `Transaction tracker started!\nListening for large transfers on ${name}`
   );
 
-  contract.on("Transfer", (from, to, amount, data) => {
+  transactionContract.on("Transfer", (from, to, amount, data) => {
     if (amount.toNumber() >= TRANSFER_THRESHOLD) {
       console.log(
         `New transfer for ${name}: https://etherscan.io/tx/${data.transactionHash}`
